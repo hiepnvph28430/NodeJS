@@ -1,3 +1,16 @@
 {
-    "Product": {}
+  "products": [
+    {
+      "name": "sản phẩm 2",
+      "price": "999",
+      "quantily": "100",
+      "id": 1
+    },
+    {
+      "name": "sản phẩm 3",
+      "price": "888",
+      "quantily": "10",
+      "id": 2
+    }
+  ]
 }
