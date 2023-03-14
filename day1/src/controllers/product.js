@@ -1,10 +1,12 @@
 import axios from "axios";
+import dotenv from "dotenv"
+dotenv.config()
 
-const API_URI = "http://localhost:3002/products";
+const { API_URL } = process.env;
 
 export const getAll = async (req, res) => {
     try {
-        const { data: products } = await axios.get(`${API_URI}`);
+        const { data: products } = await axios.get(`${API_URL}/products`);
         if (products.length === 0) {
             return res.json({
                 message: "Không có sản phẩm nào",
@@ -19,7 +21,7 @@ export const getAll = async (req, res) => {
 };
 export const get = async function (req, res) {
     try {
-        const { data: product } = await axios.get(`${API_URI}/${req.params.id}`);
+        const { data: product } = await axios.get(`${API_URL}/products/${req.params.id}`);
         if (!product) {
             return res.json({
                 message: "Không có sản phẩm nào",
@@ -34,7 +36,7 @@ export const get = async function (req, res) {
 };
 export const create = async function (req, res) {
     try {
-        const { data: product } = await axios.post(`${API_URI}`, req.body);
+        const { data: product } = await axios.post(`${API_URL}/products`, req.body);
         if (!product) {
             return res.json({
                 message: "Không thêm sản phẩm",
@@ -52,7 +54,7 @@ export const create = async function (req, res) {
 };
 export const update = async function (req, res) {
     try {
-        const { data: product } = await axios.patch(`${API_URI}/${req.params.id}`, req.body);
+        const { data: product } = await axios.patch(`${API_URL}/products/${req.params.id}`, req.body);
         if (!product) {
             return res.json({
                 message: "Cập nhật sản phẩm không thành công",
@@ -70,7 +72,7 @@ export const update = async function (req, res) {
 };
 export const remove = async function (req, res) {
     try {
-        await axios.delete(`${API_URI}/${req.params.id}`);
+        await axios.delete(`${API_URL}/products/${req.params.id}`);
         res.json({
             message: "Xóa sản phẩm thành công",
         });

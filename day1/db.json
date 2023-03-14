@@ -5,6 +5,12 @@
       "price": "999",
       "quantily": "100",
       "id": 1
+    },
+    {
+      "name": "sanpham 2",
+      "price": "878",
+      "quantily": "12",
+      "id": 3
     }
   ]
 }
