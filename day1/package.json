@@ -5,7 +5,7 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"vite\" \"json-server --watch db.json --port 3002\""
+    "dev": "vite"
   },
   "keywords": [],
   "author": "",
@@ -15,7 +15,8 @@
     "concurrently": "^7.6.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "joi": "^17.8.4"
+    "joi": "^17.8.4",
+    "mongoose": "^7.0.2"
   },
   "devDependencies": {
     "vite": "^4.1.4",
