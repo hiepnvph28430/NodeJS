@@ -2,12 +2,13 @@ import axios from "axios";
 import dotenv from "dotenv"
 import joi from "joi"
 import Product from "../models/product";
-const productSchema = joi.object({
-    name: joi.string().required(),
-    price: joi.number().required(),
-    description: joi.string(),
-    quantily: joi.number(),
-});
+import { productSchema } from "../schemas/product";
+// const productSchema = joi.object({
+//     name: joi.string().required(),
+//     price: joi.number().required(),
+//     description: joi.string(),
+//     quantily: joi.number(),
+// });
 
 dotenv.config()
 
@@ -48,10 +49,11 @@ export const get = async function (req, res) {
 };
 export const create = async function (req, res) {
     try {
-        const { error } = productSchema.validate(req.body);
+        const { error } = productSchema.validate(req.body, { abortEarly: false })
         if (error) {
+            const errors = error.details.map(err => err.message)
             return res.status(400).json({
-                message: error.details[0].message,
+                message: errors
             });
         }
         // const { data: product } = await axios.post(`${API_URL}/products`, req.body);

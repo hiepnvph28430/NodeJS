@@ -7,6 +7,7 @@ const productSchema = new mongoose.Schema({
     },
     price: {
         type: Number,
+        require: true
     },
     quantily: {
         type: Number
