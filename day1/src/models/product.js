@@ -1,4 +1,6 @@
-import mongoose from "mongoose"
+
+import mongoose from "mongoose";
+
 const productSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -7,11 +9,13 @@ const productSchema = new mongoose.Schema({
     },
     price: {
         type: Number,
-        require: true
     },
-    quantily: {
-        type: Number
+    categoryId: {
+        type: mongoose.Types.ObjectId,
+        ref: "Category"
     }
-})
+},
+    { timestamps: true, versionKey: false }
+)
 
-export default mongoose.model("Product", productSchema)
+export default mongoose.model("Product", productSchema);

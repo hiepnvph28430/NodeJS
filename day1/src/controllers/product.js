@@ -1,18 +1,19 @@
-import axios from "axios";
+
 import dotenv from "dotenv"
 import joi from "joi"
 import Product from "../models/product";
-import { productSchema } from "../schemas/product";
-// const productSchema = joi.object({
-//     name: joi.string().required(),
-//     price: joi.number().required(),
-//     description: joi.string(),
-//     quantily: joi.number(),
-// });
 
+// import { productSchema } from "../schemas/product";
 dotenv.config()
 
 const { API_URL } = process.env;
+const productSchema = joi.object({
+    name: joi.string().required(),
+    price: joi.number().required(),
+    description: joi.string(),
+    quantily: joi.number(),
+    categoryId: joi.string().required(),
+});
 
 export const getAll = async (req, res) => {
     try {
@@ -27,14 +28,15 @@ export const getAll = async (req, res) => {
         return res.json(products);
     } catch (error) {
         return res.status(400).json({
-            message: error,
+            message: error.message,
         });
     }
 };
 export const get = async function (req, res) {
     try {
         // const { data: product } = await axios.get(`${API_URL}/products/${req.params.id}`);
-        const product = await Product.findById(req.params.id);
+
+        const product = await Product.findById(req.params.id).populate("categoryId");
         if (!product) {
             return res.json({
                 message: "Không có sản phẩm nào",
@@ -43,7 +45,7 @@ export const get = async function (req, res) {
         return res.json(product);
     } catch (error) {
         return res.status(400).json({
-            message: error,
+            message: error.message,
         });
     }
 };
@@ -76,7 +78,13 @@ export const create = async function (req, res) {
 export const update = async function (req, res) {
     try {
         // const { data: product } = await axios.patch(`${API_URL}/products/${req.params.id}`, req.body);
-        const product = await Product.updateOne({ _id: req.params.id }, req.body)
+        const { error } = productShema.validate(req.body);
+        if (error) {
+            return res.status(400).json({
+                message: error.details[0].message,
+            })
+        }
+        const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!product) {
             return res.json({
                 message: "Cập nhật sản phẩm không thành công",
@@ -90,20 +98,21 @@ export const update = async function (req, res) {
 
     } catch (error) {
         return res.status(400).json({
-            message: error,
+            message: error.message,
         });
     }
 };
 export const remove = async function (req, res) {
     try {
         // await axios.delete(`${API_URL}/products/${req.params.id}`);
-        await Product.deleteOne({ _id: req.params.id })
-        res.json({
+        const product = await Product.findByIdAndDelete(req.params.id);
+        return res.json({
             message: "Xóa sản phẩm thành công",
+            product
         });
     } catch (error) {
         return res.status(400).json({
-            message: error,
+            message: error.message,
         });
     }
 };
